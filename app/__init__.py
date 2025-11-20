@@ -18,6 +18,7 @@ def create_app():
     login_manager.init_app(app)
 
     with app.app_context():
+        from app.models import Restaurant, TipoComida, Plato, User, Pedido, PedidoDetalle
         db.create_all()
 
     # register blueprints
