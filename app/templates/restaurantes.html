@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}ComidaExpress - Restaurante{% endblock %}
+{% block content %}
+
+<h2>{{ restaurant.nombre }}</h2>
+
+<div class="productos">
+  {% for p in platos %}
+  <div class="producto">
+      <div class="imagen">
+        <img src="{{ url_for('static', filename='img/platos/' + p.imagen_url) }}">
+      </div>
+
+      <p class="precio">${{ "%.2f"|format(p.precio) }}</p>
+      <p class="nombre">{{ p.nombre }}</p>
+      
+      <button class="btn-agregar add-btn" data-id="{{ p.id }}">
+          + Agregar
+      </button>
+
+  </div>
+  {% endfor %}
+</div>
+</section>
+
+<script>
+/* agregar en carrito*/
+document.querySelectorAll(".add-btn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+
+        const platoId = btn.dataset.id;
+
+        const res = await fetch(`/add_to_cart/${platoId}`);
+        
+        if (res.status === 401) {
+            alert("Para agregar productos debes iniciar sesión.");
+            return;
+        }
+
+        const data = await res.json();
+
+        if (!data.success) return;
+
+        updateHeaderTotal(data.total);
+        refreshMiniCart(data.cart, data.total);
+    });
+});
+</script>
+
+{% endblock %}
+

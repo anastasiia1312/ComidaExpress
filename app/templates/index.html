@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}ComidaExpress{% endblock %}
+{% block content %}
+
+<section class="carousel">
+  <div class="carousel-inner">
+      <div class="carousel-item"><img src="{{ url_for('static', filename='img/carusel.png') }}"></div>
+      <div class="carousel-item"><img src="{{ url_for('static', filename='img/carusel2.png') }}"></div>
+      <div class="carousel-item"><img src="{{ url_for('static', filename='img/carusel3.png') }}"></div>
+      <div class="carousel-item"><img src="{{ url_for('static', filename='img/carusel4.png') }}"></div>
+      <div class="carousel-item"><img src="{{ url_for('static', filename='img/carusel5.png') }}"></div>
+      <div class="carousel-item"><img src="{{ url_for('static', filename='img/carusel6.png') }}"></div>
+  </div>
+</section>
+
+<section class="restaurants">
+  <h2>Restaurantes</h2>
+
+  {% if query %}
+<p><strong>{{ restaurants|length }}</strong> resultados encontrados para "{{ query }}"</p>
+{% endif %}
+
+  <nav class="categories">
+    <!-- fitlros -->
+    <a href="{{ url_for('main.index', categoria='all') }}">
+        <span class="{{ 'active' if selected_category=='all' or not selected_category else '' }}">
+            Todos
+        </span>
+    </a>
+    |
+    {% for c in categories %}
+        <a href="{{ url_for('main.index', categoria=c.nombre) }}">
+            <span class="{{ 'active' if selected_category==c.nombre else '' }}">
+                {{ c.nombre }}
+            </span>
+        </a>
+        {% if not loop.last %} | {% endif %}
+    {% endfor %}
+</nav>
+
+  <div class="cards">
+    {% for r in restaurants %}
+    <a href="{{ url_for('main.restaurant', restaurant_id=r.id) }}" class="card">
+      <div class="imagen">
+        <img src="{{ url_for('static', filename='img/restaurantes/' + r.imagen_url) }}" alt="{{ r.nombre }}">
+      </div>
+      <div class="card-info">
+        <span class="name">{{ r.nombre }}</span>
+        <span class="time"> ⏱ {{ r.tiempo_entrega }} </span>
+        <span class="rating">⭐ {{ "%.1f"|format(r.calificacion) if r.calificacion is not none else "N/A" }}</span>
+      </div>
+    </a>
+    {% endfor %}
+</div>
+
+</section>
+
+{% endblock %}

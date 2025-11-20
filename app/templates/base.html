@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}ComidaExpress{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
+</head>
+
+<body>
+
+<!-- header -->
+<header class="header">
+
+  <div class="logo">
+      <a href="{{ url_for('main.index') }}">
+          <img src="{{ url_for('static', filename='img/logo.png') }}" alt="ComidaExpress Logo" class="logo-img">
+      </a>
+  </div>
+
+  <div class="search-group">
+    <form method="GET" action="{{ url_for('main.index') }}">
+        <input type="text" name="q" value="{{ query }}" placeholder="Buscar comida o restaurante">
+        <button class="btn buscar">Buscar</button>
+    </form>
+  </div>
+
+  <div class="user-login">
+    {% if session.user %}
+        <a href="#" id="open-cart" class="btn iniciar">
+            🛒Carrito <span id="cart-total">0 ₽</span>
+        </a>
+
+        <a href="{{ url_for('main.logout') }}" class="btn iniciar">Salir</a>
+    {% else %}
+        <a href="{{ url_for('main.login') }}" class="btn iniciar">Iniciar</a>
+    {% endif %}
+  </div>
+
+</header>
+
+
+{% block content %}{% endblock %}
+
+<footer>
+  <p>© 2025 ComidaExpress | Contacto | Instagram | Facebook</p>
+</footer>
+
+<!-- carrito-->
+<div id="cart-overlay" class="overlay hidden"></div>
+
+<div id="cart-panel" class="cart-panel hidden">
+    <div class="cart-header">
+        <h2>🛒Carrito</h2>
+        <a href="#" class="clear-btn" onclick="clearCart()">Eliminar todo</a>
+    </div>
+
+    <div class="cart-items">       
+    </div>
+
+    <div class="cart-summary">
+        <h3>Total: <span id="sidebar-total">0 $</span></h3>
+        <a class="checkout-btn" href="{{ url_for('main.checkout') }}">Siguiente</a>
+    </div>
+</div>
+
+
+<!-- js -->
+<script>
+
+/* abrir carrito*/
+document.getElementById("open-cart")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    document.getElementById("cart-panel").classList.remove("hidden");
+    document.getElementById("cart-overlay").classList.remove("hidden");
+});
+
+/* serrar carrito*/
+document.getElementById("cart-overlay")?.addEventListener("click", () => {
+    document.getElementById("cart-panel").classList.add("hidden");
+    document.getElementById("cart-overlay").classList.add("hidden");
+});
+
+/* combiar */
+async function changeQty(platoId, action) {
+    const res = await fetch(`/cart_update/${platoId}/${action}`);
+    const data = await res.json();
+    if (!data.success) return;
+
+    updateHeaderTotal(data.total);
+    refreshMiniCart(data.cart, data.total);
+}
+
+/* eliminar */
+async function clearCart() {
+    const res = await fetch("/clear_cart");
+    const data = await res.json();
+
+    updateHeaderTotal(0);
+    refreshMiniCart({}, 0);
+}
+
+/* total en header */
+function updateHeaderTotal(total) {
+    const el = document.getElementById("cart-total");
+    if (el) el.innerText = total + " ₽";
+}
+
+/* renovar */
+function refreshMiniCart(cart, total) {
+    const box = document.querySelector(".cart-items");
+    box.innerHTML = "";
+
+    for (const [id, item] of Object.entries(cart)) {
+        box.innerHTML += `
+            <div class="cart-item">
+                <img src="/static/img/platos/${item.imagen}" class="item-img">
+
+                <div class="item-info">
+                    <p class="item-name">${item.nombre}</p>
+                    <p class="item-price">${item.precio} ₽</p>
+                </div>
+
+                <div class="item-qty">
+                    <button class="qty-btn" onclick="changeQty('${id}', 'dec')">−</button>
+                    <span>${item.cantidad}</span>
+                    <button class="qty-btn" onclick="changeQty('${id}', 'inc')">+</button>
+                </div>
+            </div>
+        `;
+    }
+
+    document.getElementById("sidebar-total").innerText = total + " ₽";
+}
+
+/* agregar en carrito */
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".add-btn").forEach(btn => {
+        btn.addEventListener("click", async () => {
+            const id = btn.dataset.id;
+
+            const res = await fetch(`/add_to_cart/${id}`);
+            const data = await res.json();
+
+            if (!data.success) return;
+
+            updateHeaderTotal(data.total);
+            refreshMiniCart(data.cart, data.total);
+        });
+    });
+});
+
+/*ЗАГРУЗКА КОРЗИНЫ ПРИ ОТКРЫТИИ СТРАНИЦЫ */
+document.addEventListener("DOMContentLoaded", async () => {
+    document.querySelectorAll(".add-btn").forEach(btn => {
+        btn.addEventListener("click", async () => {
+            const id = btn.dataset.id;
+            const res = await fetch(`/add_to_cart/${id}`);
+            const data = await res.json();
+            if (!data.success) return;
+
+            updateHeaderTotal(data.total);
+            refreshMiniCart(data.cart, data.total);
+        });
+    });
+
+    const res = await fetch("/cart_state");
+    const data = await res.json();
+
+    updateHeaderTotal(data.total);
+    refreshMiniCart(data.cart, data.total);
+});
+</script>
+
+</body>
+</html>
+
+
+

@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}Оформление заказа — ComidaExpress{% endblock %}
+{% block content %}
+
+<div class="checkout-container">
+    <h1 class="checkout-title">Realizar pedido</h1>
+    <div class="checkout-content">
+
+        <div class="checkout-left">
+            <div class="delivery-box">
+
+                <label>Ingrese su dirección:</label>
+
+                <div class="address-inputs">
+                    <input type="text" placeholder="Ciudad" class="addr ciudad">
+                    <input type="text" placeholder="Calle" class="addr calle">
+                    <input type="text" placeholder="Altura" class="addr altura">
+                    <input type="text" placeholder="Piso" class="addr piso">
+                    <input type="text" placeholder="Departamento" class="addr departamento">
+                </div>
+
+                <form id="order-form" method="POST" action="{{ url_for('main.make_order') }}">
+                    <input type="hidden" name="ciudad" id="ciudad_input">
+                    <input type="hidden" name="calle" id="calle_input">
+                    <input type="hidden" name="altura" id="altura_input">
+                    <input type="hidden" name="piso" id="piso_input">
+                    <input type="hidden" name="departamento" id="departamento_input">
+                </form>
+
+            </div>
+        </div>
+
+        <div class="checkout-right">
+            <div class="payment-box">
+                <h3>Metodo de pago:</h3>
+                <p><strong>Solo efectivo</strong></p>
+
+                <button class="pay-btn">Hacer pedido</button>
+                <p class="total-sum">{{ total }} $</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- lista de pedido-->
+    <div class="order-list">
+        <h3>Su pedido</h3>
+
+        {% for id, item in cart.items() %}
+        <div class="order-item" data-id="{{ id }}">
+    <img src="{{ url_for('static', filename='img/platos/' + item.imagen) }}" class="order-img">
+
+    <div class="order-info">
+        <p class="order-name">{{ item.nombre }}</p>
+        <p class="order-price">{{ item.precio * item.cantidad }} ₽</p>
+    </div>
+
+    <div class="order-qty">
+        <button class="qty-minus qty-btn" data-action="dec">−</button>
+        <span class="qty">{{ item.cantidad }}</span>
+        <button class="qty-plus qty-btn" data-action="inc">+</button>
+    </div>
+</div>
+
+        {% endfor %}
+    </div>
+
+</div>
+
+<script>
+document.querySelector('.pay-btn').addEventListener('click', () => {
+    document.getElementById('ciudad_input').value = document.querySelector('.addr.ciudad').value;
+    document.getElementById('calle_input').value = document.querySelector('.addr.calle').value;
+    document.getElementById('altura_input').value = document.querySelector('.addr.altura').value;
+    document.getElementById('piso_input').value = document.querySelector('.addr.piso').value;
+    document.getElementById('departamento_input').value = document.querySelector('.addr.departamento').value;
+
+    document.getElementById('order-form').submit();
+});
+
+document.querySelectorAll(".qty-btn").forEach(btn => {
+    btn.addEventListener("click", async (e) => {
+        e.preventDefault();
+
+        const itemEl = e.target.closest(".order-item");
+        const platoId = itemEl.dataset.id;
+        const action = e.target.dataset.action;
+
+        const res = await fetch(`/cart_update/${platoId}/${action}`);
+        const data = await res.json();
+
+        if (!data.success) return;
+        if (data.cart[platoId]) {
+            itemEl.querySelector(".qty").innerText = data.cart[platoId].cantidad;
+
+            const newPrice =
+                data.cart[platoId].precio * data.cart[platoId].cantidad;
+
+            itemEl.querySelector(".order-price").innerText = newPrice + " ₽";
+        } else {
+            itemEl.remove();
+        }
+        document.querySelector(".total-sum").innerText = data.total + " ₽";
+        updateHeaderTotal(data.total);
+        refreshMiniCart(data.cart, data.total);
+    });
+});
+
+</script>
+
+{% endblock %}
+
