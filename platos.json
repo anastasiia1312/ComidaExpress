@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "restaurante_id": 1,
+    "nombre": "Pizza Napolitana",
+    "descripcion": "Tomate fresco, mozzarella, albahaca",
+    "precio": 12000,
+    "imagen_url": "napolitana.png"
+  },
+  {
+    "id": 2,
+    "restaurante_id": 1,
+    "nombre": "Pizza Cuatro Quesos",
+    "descripcion": "Mozzarella, roquefort, parmesano, provolone",
+    "precio": 13000,
+    "imagen_url": "4quesos.png"
+  },
+  {
+    "id": 3,
+    "restaurante_id": 2,
+    "nombre": "Sushi Roll Clásico",
+    "descripcion": "Salmón y queso crema",
+    "precio": 15000,
+    "imagen_url": "sushi.png"
+  },
+  {
+    "id": 4,
+    "restaurante_id": 2,
+    "nombre": "Sushi California",
+    "descripcion": "Cangrejo, palta y pepino",
+    "precio": 14000,
+    "imagen_url": "california.png"
+  },
+  {
+    "id": 5,
+    "restaurante_id": 3,
+    "nombre": "Hamburguesa Doble",
+    "descripcion": "Doble carne y cheddar",
+    "precio": 9000,
+    "imagen_url": "burger.png"
+  },
+  {
+    "id": 6,
+    "restaurante_id": 5,
+    "nombre": "Pasta Carbonara",
+    "descripcion": "Panceta, huevo y parmesano",
+    "precio": 18000,
+    "imagen_url": "carbonara.png"
+  }
+]

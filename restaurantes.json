@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "nombre": "Pizza Palermo",
+    "telefono": "1133221100",
+    "imagen_url": "pizzaPalermo.png",
+    "calificacion": 4.6,
+    "tiempo_entrega": "30-40 min",
+    "tipo_comida_id": 5
+  },
+  {
+    "id": 2,
+    "nombre": "Tokyo Sushi",
+    "telefono": "1144552211",
+    "imagen_url": "sishiTokio.png",
+    "calificacion": 4.8,
+    "tiempo_entrega": "40-50 min",
+    "tipo_comida_id": 2
+  },
+  {
+    "id": 3,
+    "nombre": "BurgerHouse",
+    "telefono": "1144889900",
+    "imagen_url": "burgerHouse.png",
+    "calificacion": 4.3,
+    "tiempo_entrega": "25-35 min",
+    "tipo_comida_id": 3
+  },
+  {
+    "id": 4,
+    "nombre": "China Wok",
+    "telefono": "1133772200",
+    "imagen_url": "china.png",
+    "calificacion": 4.2,
+    "tiempo_entrega": "35-45 min",
+    "tipo_comida_id": 4
+  },
+  {
+    "id": 5,
+    "nombre": "La Trattoria",
+    "telefono": "1144229988",
+    "imagen_url": "trattoria.png",
+    "calificacion": 4.7,
+    "tiempo_entrega": "30-40 min",
+    "tipo_comida_id": 5
+  },
+  {
+    "id": 6,
+    "nombre": "Green Life",
+    "telefono": "1133554466",
+    "imagen_url": "greenlife.png",
+    "calificacion": 4.5,
+    "tiempo_entrega": "20-30 min",
+    "tipo_comida_id": 6
+  },
+  {
+    "id": 7,
+    "nombre": "El Mariachi",
+    "telefono": "1188776655",
+    "imagen_url": "mariachi.png",
+    "calificacion": 4.4,
+    "tiempo_entrega": "40-50 min",
+    "tipo_comida_id": 7
+  },
+  {
+    "id": 8,
+    "nombre": "Pastas Libre",
+    "telefono": "1122113344",
+    "imagen_url": "pasta.png",
+    "calificacion": 4.6,
+    "tiempo_entrega": "25-35 min",
+    "tipo_comida_id": 5
+  },
+  {
+    "id": 9,
+    "nombre": "La Parrilla del Sur",
+    "telefono": "1199001122",
+    "imagen_url": "parilla.png",
+    "calificacion": 4.9,
+    "tiempo_entrega": "45-60 min",
+    "tipo_comida_id": 9
+  },
+  {
+    "id": 10,
+    "nombre": "Pan y Miel",
+    "telefono": "1133998887",
+    "imagen_url": "pan.png",
+    "calificacion": 4.3,
+    "tiempo_entrega": "15-25 min",
+    "tipo_comida_id": 10
+  }
+]
