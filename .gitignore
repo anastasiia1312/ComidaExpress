@@ -1,51 +1,16 @@
-# ============================
-# Python
-# ============================
+# Archivos que no deben incluirse en el repositorio
+
+# Bytecode / cache
 __pycache__/
 *.pyc
-*.pyo
-*.pyd
 
-# ============================
-# Virtual Environment
-# ============================
-venv/
-.env/
-*.env
+# Virtual environment
+.venv/
 
-# ============================
-# Flask instance folder
-# ============================
+# Environment variables
+.env
+
+# Local SQLite database
 instance/
 *.db
-*.sqlite
-*.sqlite3
 
-# ============================
-# OS files
-# ============================
-.DS_Store
-Thumbs.db
-
-# ============================
-# VSCode
-# ============================
-.vscode/
-
-# ============================
-# Compiled / cache
-# ============================
-*.log
-*.pot
-*.mo
-
-# ============================
-# Environmental / secrets
-# ============================
-.env
-*.env
-
-# ============================
-# Project-specific
-# ============================
-database.db
